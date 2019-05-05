@@ -1,0 +1,29 @@
+{
+  "name": "devconnecter",
+  "version": "1.0.0",
+  "description": "MERN tutorial",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/natarajan1993/MERN-stack.git"
+  },
+  "author": "Nate",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/natarajan1993/MERN-stack/issues"
+  },
+  "homepage": "https://github.com/natarajan1993/MERN-stack#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.1.0",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.1",
+    "gravatar": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.5.5",
+    "request": "^2.88.0"
+  }
+}
