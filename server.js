@@ -1,10 +1,16 @@
 const express = require("express")
 const connectDB = require("./config/db")
 
+
 const app = express()
 connectDB(); // Connect Database
 
 app.get('/', (req, res) => res.send("API running"))
+
+// Init Middleware
+app.use(express.json({
+    extended: false
+})); // parses the body of the request sent by the User model
 
 // Define routes
 app.use('/api/users', require('./routes/api/users'));
