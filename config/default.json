@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://nate123:nate123@devconnector-hsmiw.mongodb.net/test?retryWrites=true"
+    "mongoURI": "mongodb+srv://nate123:nate123@devconnector-hsmiw.mongodb.net/test?retryWrites=true",
+    "jwtSecret": "testsecrettoken"
 }

@@ -6,6 +6,8 @@ const {
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
+const jwt = require('jsonwebtoken'); // JSON web token is used to authenticate a user
+const config = require('config')
 const User = require('../../models/User')
 
 // @route   POST api/users
@@ -67,7 +69,20 @@ router.post('/', [
 
 
         // Return jsonwebtoken 
-        res.send('User Registered')
+        const payload = {
+            user: {
+                id: user.id
+            }
+        }
+        jwt.sign(payload, config.get('jwtSecret'), {
+                expiresIn: 360000, // Change this to 3600 in production
+            },
+            (err, token) => {
+                if (err) throw err;
+                res.json({ // If no errors, send the jwt to the user -> large string of letters and numbers that is unique to each user. Will be used to identify a specific user
+                    token
+                });
+            })
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error'); // Any errors caught will definitely be a server error
