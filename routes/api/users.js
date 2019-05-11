@@ -10,16 +10,16 @@ const jwt = require('jsonwebtoken'); // JSON web token is used to authenticate a
 const config = require('config')
 const User = require('../../models/User')
 
-// @route   POST api/users
+// @route   POST api/auth   
 // @desc    Register user
 // @access  Public
-router.post('/', [
+router.post('/', [ // Create a user
     check('name', 'Name is required').not().isEmpty(), //Express validator for checking if name field is not empty
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Please enter a password with 6 or more characters').isLength({
         min: 6
     })
-], async (req, res) => {
+], async (req, res) => { // Check if there are any errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({
@@ -27,7 +27,7 @@ router.post('/', [
         });
     }
 
-    const {
+    const { // De-construction of JSON payload -> ES6
         name,
         email,
         password
@@ -89,5 +89,6 @@ router.post('/', [
     }
 
 });
+
 
 module.exports = router;
