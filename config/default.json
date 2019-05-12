@@ -1,4 +1,6 @@
 {
     "mongoURI": "mongodb+srv://nate123:nate123@devconnector-hsmiw.mongodb.net/test?retryWrites=true",
-    "jwtSecret": "testsecrettoken"
+    "jwtSecret": "testsecrettoken",
+    "githubClientId": "effe3911bba4121d54a0",
+    "githubSecret": "4b13263e476fb8bc0f5199a88df05a4aaa42bd7d"
 }
