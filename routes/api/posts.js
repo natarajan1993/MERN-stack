@@ -12,7 +12,7 @@ const router = express.Router();
 
 // @route   POST api/posts
 // @desc    Create a post
-// @access  Public
+// @access  Private
 router.post('/', [auth, [
     check('text', 'Text is required').not().isEmpty()
 ]], async (req, res) => {
@@ -149,6 +149,71 @@ router.put('/unlike/:id', auth, async (req, res) => {
         post.likes.splice(removeIndex, 1);
         await post.save();
         res.json(post.likes);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   POST api/posts/comment/:id
+// @desc    Comment on a post
+// @access  Private
+router.post('/comment/:post_id', [auth, [
+    check('text', 'Text is required').not().isEmpty()
+]], async (req, res) => {
+    const errors = validationResult(req); // Check for any token validation errors
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            errors: errors.array()
+        });
+    }
+
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        const post = await Post.findById(req.params.post_id);
+
+        const newComment = {
+            text: req.body.text, // comment text is from request body
+            name: user.name, // username and avatar is from user object
+            avatar: user.avatar,
+            user: req.user.id // user id is from request
+        };
+
+        post.comments.unshift(newComment);
+
+        await post.save(); // save the new post
+        res.json(post.comments); // send the post object as a response
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   POST api/posts/comment/:post_id/:comment_id
+// @desc    Delete comment on a post
+// @access  Private
+router.delete('/comment/:post_id/:comment_id', auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.post_id);
+        //Get comment from post
+        const comment = post.comments.find(comment => comment.id === req.params.comment_id);
+        if (!comment) { // Check if comment exists
+            return res.status(404).json({
+                msg: "Comment not found"
+            });
+        }
+        // Check if deleting user is creator of comment
+        if (comment.user.toString() !== req.user.id) {
+            return res.status(401).json({
+                msg: 'User not authorized'
+            });
+        }
+        // Get the index of the comment we need to remove based on user id. We are doing this because we don't have a way to get the id of the comment made by that session's user. So we are matching the comment object's user id string to the session's user id
+        const removeIndex = post.comments.map(comment => comment.user.toString()).indexOf(req.user.id);
+        post.comments.splice(removeIndex, 1);
+        await post.save();
+        res.json(post.comments);
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
