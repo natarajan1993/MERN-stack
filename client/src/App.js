@@ -9,6 +9,7 @@ import Login from './components/auth/Login'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {Provider} from 'react-redux';
 import store from './store'
+import Alert from './components/layout/Alert'
 
 const App = () =>(
   <Provider store={store}>
@@ -17,6 +18,7 @@ const App = () =>(
         <Navbar />
         <Route exact path ='/' component={Landing}></Route>
         <section className="container">
+          <Alert/>
           <Switch>
             <Route exact path ='/register' component={Register}></Route>
             <Route exact path ='/login' component={Login}></Route>
