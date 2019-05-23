@@ -1,5 +1,6 @@
 import React, {
-  Fragment
+  Fragment,
+  useEffect
 } from 'react';
 import './App.css';
 import Landing from './components/layout/Landing'
@@ -10,8 +11,20 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {Provider} from 'react-redux';
 import store from './store'
 import Alert from './components/layout/Alert'
+import {loadUser} from './actions/auth'
+import setAuthToken from './utils/setAuthToken'
 
-const App = () =>(
+if (localStorage.token){
+  setAuthToken(localStorage.token)
+}
+
+// Every time page is loaded, user is loaded
+const App = () =>{
+  useEffect(() => {
+    store.dispatch(loadUser())
+  }, []); // Life cycle method equivalent for React Hooks which will run once when loaded. By default runs continuosly but overrided by adding [] at the end. Hooks let you use state and other class exclusive features without using a class
+
+  return (
   <Provider store={store}>
     <Router>
       <Fragment>
@@ -27,5 +40,5 @@ const App = () =>(
       </Fragment>
     </Router>
   </Provider>
-);
+)};
 export default App;
