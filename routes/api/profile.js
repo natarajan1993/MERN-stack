@@ -5,6 +5,7 @@ const request = require('request');
 const config = require('config');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 const {
     check,
     validationResult
@@ -165,7 +166,9 @@ router.get('/user/:user_id', async (req, res) => {
 router.delete('/', auth, async (req, res) => {
     // Need to add auth middleware for private routes
     try {
-        // @todo remove user's posts
+        // Remove user's posts
+        await Post.deleteMany({user:req.user.id})
+
         await Profile.findOneAndRemove({
             user: req.user.id
         }); // Remove profile
