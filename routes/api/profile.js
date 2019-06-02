@@ -59,15 +59,15 @@ router.post(
             company,
             website,
             location,
-            status,
-            skills,
-            githubusername,
             bio,
-            twitter,
-            facebook,
-            linkedin,
+            status,
+            githubusername,
+            skills,
             youtube,
-            instagram
+            facebook,
+            twitter,
+            instagram,
+            linkedin,
         } = req.body;
 
         // Build Profile object
